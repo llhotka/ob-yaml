@@ -1,8 +1,8 @@
-;;; ob-template.el --- org-babel functions for template evaluation
+;;; ob-yaml.el --- org-babel functions for YAML source blocks
 
-;; Copyright (C) your name here
+;; Copyright (C) 2023 Ladislav Lhotka
 
-;; Author: your name here
+;; Author: Ladislav Lhotka
 ;; Keywords: literate programming, reproducible research
 ;; Homepage: https://orgmode.org
 ;; Version: 0.01
@@ -26,78 +26,49 @@
 
 ;;; Commentary:
 
-;; This file is not intended to ever be loaded by org-babel, rather it is a
-;; template for use in adding new language support to Org-babel. Good first
-;; steps are to copy this file to a file named by the language you are adding,
-;; and then use `query-replace' to replace all strings of "template" in this
-;; file with the name of your new language.
-
-;; After the `query-replace' step, it is recommended to load the file and
-;; register it to org-babel either via the customize menu, or by evaluating the
-;; line: (add-to-list 'org-babel-load-languages '(template . t)) where
-;; `template' should have been replaced by the name of the language you are
-;; implementing (note that this applies to all occurrences of 'template' in this
-;; file).
-
-;; After that continue by creating a simple code block that looks like e.g.
+;; This module enables YAML source code blocks in Org Babel. It was created
+;; as a trivial modification of the Emacs Lisp template
 ;;
-;; #+begin_src template
-
-;; test
-
+;; https://git.sr.ht/~bzg/worg/tree/master/item/org-contrib/babel/ob-template.el
+;;
+;; After loading this file, e.g. via M-x load-file, support for YAML has to be
+;; added, e.g. by evaluating
+;;
+;; (add-to-list 'org-babel-load-languages '(yaml . t))
+;;
+;; After that, code blocks like the following can be included in Org mode
+;; files:
+;;
+;; #+begin_src yaml :tangle hello.yaml
+;; greeting: "Hello, world!"
 ;; #+end_src
-
-;; Finally you can use `edebug' to instrumentalize
-;; `org-babel-expand-body:template' and continue to evaluate the code block. You
-;; try to add header keywords and change the body of the code block and
-;; reevaluate the code block to observe how things get handled.
-
-;;
-;; If you have questions as to any of the portions of the file defined
-;; below please look to existing language support for guidance.
-;;
-;; If you are planning on adding a language to org-babel we would ask
-;; that if possible you fill out the FSF copyright assignment form
-;; available at https://orgmode.org/request-assign-future.txt as this
-;; will make it possible to include your language support in the core
-;; of Org-mode, otherwise unassigned language support files can still
-;; be included in the contrib/ directory of the Org-mode repository.
-
-
-;;; Requirements:
-
-;; Use this section to list the requirements of this language.  Most
-;; languages will require that at least the language be installed on
-;; the user's system, and the Emacs major mode relevant to the
-;; language be installed as well.
 
 ;;; Code:
 (require 'ob)
 (require 'ob-ref)
 (require 'ob-comint)
 (require 'ob-eval)
-;; possibly require modes required for your language
 
 ;; optionally define a file extension for this language
-(add-to-list 'org-babel-tangle-lang-exts '("template" . "tmp"))
+(add-to-list 'org-babel-tangle-lang-exts '("yaml" . "yaml"))
 
 ;; optionally declare default header arguments for this language
-(defvar org-babel-default-header-args:template '())
+(defvar org-babel-default-header-args:yaml '())
 
 ;; This function expands the body of a source code block by doing things like
 ;; prepending argument definitions to the body, it should be called by the
-;; `org-babel-execute:template' function below. Variables get concatenated in
+;; `org-babel-execute:yaml' function below. Variables get concatenated in
 ;; the `mapconcat' form, therefore to change the formatting you can edit the
 ;; `format' form.
-(defun org-babel-expand-body:template (body params &optional processed-params)
+(defun org-babel-expand-body:yaml (body params &optional processed-params)
   "Expand BODY according to PARAMS, return the expanded body."
-  (require 'inf-template nil t)
+  (require 'inf-yaml nil t)
   (let ((vars (org-babel--get-vars (or processed-params (org-babel-process-params params)))))
     (concat
      (mapconcat ;; define any variables
       (lambda (pair)
         (format "%s=%S"
-                (car pair) (org-babel-template-var-to-template (cdr pair))))
+                (car pair) (org-babel-yaml-var-to-yaml (cdr pair))))
       vars "\n")
      "\n" body "\n")))
 
@@ -120,23 +91,23 @@
 ;; "session" evaluation).  Also you are free to define any new header
 ;; arguments which you feel may be useful -- all header arguments
 ;; specified by the user will be available in the PARAMS variable.
-(defun org-babel-execute:template (body params)
-  "Execute a block of Template code with org-babel.
+(defun org-babel-execute:yaml (body params)
+  "Execute a block of YAML code with org-babel.
 This function is called by `org-babel-execute-src-block'"
-  (message "executing Template source code block")
+  (message "executing YAML source code block")
   (let* ((processed-params (org-babel-process-params params))
          ;; set the session if the value of the session keyword is not the
          ;; string `none'
          (session (unless (string= value "none")
-                   (org-babel-template-initiate-session
+                   (org-babel-yaml-initiate-session
                     (cdr (assq :session processed-params)))))
          ;; variables assigned for use in the block
          (vars (org-babel--get-vars processed-params))
          (result-params (assq :result-params processed-params))
          ;; either OUTPUT or VALUE which should behave as described above
          (result-type (assq :result-type processed-params))
-         ;; expand the body with `org-babel-expand-body:template'
-         (full-body (org-babel-expand-body:template
+         ;; expand the body with `org-babel-expand-body:yaml'
+         (full-body (org-babel-expand-body:yaml
                      body params processed-params)))
     ;; actually execute the source-code block either in a session or
     ;; possibly by dropping it to a temporary file and evaluating the
@@ -156,25 +127,25 @@ This function is called by `org-babel-execute-src-block'"
 
 ;; This function should be used to assign any variables in params in
 ;; the context of the session environment.
-(defun org-babel-prep-session:template (session params)
+(defun org-babel-prep-session:yaml (session params)
   "Prepare SESSION according to the header arguments specified in PARAMS."
   )
 
-(defun org-babel-template-var-to-template (var)
-  "Convert an elisp var into a string of template source code
+(defun org-babel-yaml-var-to-yaml (var)
+  "Convert an elisp var into a string of YAML source code
 specifying a var of the same value."
   (format "%S" var))
 
-(defun org-babel-template-table-or-string (results)
+(defun org-babel-yaml-table-or-string (results)
   "If the results look like a table, then convert them into an
 Emacs-lisp table, otherwise return the results as a string."
   )
 
-(defun org-babel-template-initiate-session (&optional session)
+(defun org-babel-yaml-initiate-session (&optional session)
   "If there is not a current inferior-process-buffer in SESSION then create.
 Return the initialized session."
   (unless (string= session "none")
     ))
 
-(provide 'ob-template)
-;;; ob-template.el ends here
+(provide 'ob-yaml)
+;;; ob-yaml.el ends here
