@@ -3,8 +3,8 @@
 ;; Copyright (C) 2023 Ladislav Lhotka
 
 ;; Author: Ladislav Lhotka
-;; Keywords: literate programming, reproducible research
-;; Homepage: https://orgmode.org
+;; Keywords: literate programming, YAML, configuration
+;; Homepage: https://github.com/llhotka/ob-yaml
 ;; Version: 0.01
 
 ;;; License:
