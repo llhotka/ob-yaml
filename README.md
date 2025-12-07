@@ -8,7 +8,7 @@ Only a subset of Org Babel functionality is required for such purposes, namely e
 
 ## Installation
 
-The module can be easily installed via `use-package`:
+The module can be easily installed in Emacs via `use-package`:
 
 ``` elisp
 (use-package ob-yaml
