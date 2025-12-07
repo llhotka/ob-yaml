@@ -8,11 +8,12 @@ Only a subset of Org Babel functionality is required for such purposes, namely e
 
 ## Installation
 
-The module can be easily loaded via `use-package`:
+The module can be easily installed via `use-package`:
 
 ``` elisp
 (use-package ob-yaml
-  :vc (:url "https://github.com/llhotka/ob-yaml.git" :rev :newest))
+  :vc (:url "https://github.com/llhotka/ob-yaml.git"
+  :rev :newest))
 ```
 
 Alternatively, the `ob-yaml.el` file can be downloaded and than loaded
