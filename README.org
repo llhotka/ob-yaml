@@ -1,5 +1,4 @@
 #+TITLE: Org Babel support for YAML
-#+AUTHOR: Ladislav Lhotka
 
 The Elisp module ~ob-yaml.el~ adds support for YAML source code blocks in Org Babel. It was created via trivial modifications of the [[https://git.sr.ht/~bzg/worg/tree/master/item/org-contrib/babel/ob-template.el][template file]].
 
