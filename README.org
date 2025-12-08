@@ -1,6 +1,6 @@
 #+TITLE: Org Babel support for YAML
 
-The Elisp module ~ob-yaml.el~ adds support for YAML source code blocks in Org Babel. It was created via trivial modifications of the [[https://git.sr.ht/~bzg/worg/tree/master/item/org-contrib/babel/ob-template.el][template file]].
+The Emacs Lisp module ~ob-yaml.el~ adds support for YAML source code blocks in Org Babel. It was created via trivial modifications of the [[https://git.sr.ht/~bzg/worg/tree/master/item/org-contrib/babel/ob-template.el][template file]].
 
 The primary aim was to allow for writing and maintaining bigger YAML files (or sets of such files) in a [[https://en.wikipedia.org/wiki/Literate_programming][literate programming]] style by using the powerful Babel subsystem of [[https://orgmode.org][Org mode]]. One particular example are [[https://www.home-assistant.io][Home Assistant]] configuration files.
 
