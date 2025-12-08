@@ -1,0 +1,20 @@
+#+TITLE: Org Babel support for YAML
+
+The Elisp module ~ob-yaml.el~ adds support for YAML source code blocks in Org Babel. It was created via trivial modifications of the [[https://git.sr.ht/~bzg/worg/tree/master/item/org-contrib/babel/ob-template.el][template file]].
+
+The primary aim was to allow for writing and maintaining bigger YAML files (or sets of such files) in a [[https://en.wikipedia.org/wiki/Literate_programming][literate programming]] style by using the powerful Babel subsystem of [[https://orgmode.org][Org mode]]. One particular example are [[https://www.home-assistant.io][Home Assistant]] configuration files.
+
+Only a subset of Org Babel functionality is required for such purposes, namely editing blocks in [[https://www.emacswiki.org/emacs/YamlMode][yaml-mode]], tangling (including [[https://orgmode.org/manual/Noweb-Reference-Syntax.html][noweb references]]) and possibly exporting. Specifically, YAML blocks needn't be evaluated, and so evaluation-related functions are left unimplemented.
+
+* Installation
+
+The module can be easily installed in Emacs via [[https://www.gnu.org/software/emacs/manual/html_mono/use-package.html][use-package]]:
+
+#+begin_src emacs-lisp
+  (use-package ob-yaml
+    :vc (:url "https://github.com/llhotka/ob-yaml.git"
+         :rev :newest))
+#+end_src
+
+Alternatively, the ~ob-yaml.el file can be downloaded and than loaded
+locally using, for instance, the Emacs [[https://www.gnu.org/software/emacs/manual/html_node/eintr/Loading-Files.html][load]] function.
