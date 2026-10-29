@@ -48,9 +48,21 @@
 (require 'ob-ref)
 (require 'ob-comint)
 (require 'ob-eval)
+(require 'org)
 
 ;; define a file extension for YAML
 (add-to-list 'org-babel-tangle-lang-exts '("yaml" . "yaml"))
+
+;; `pcomplete/org-mode/block-option/src' gets source-block language
+;; candidates from the key type of `org-babel-load-languages'.  Add YAML to
+;; that list so `M-TAB' can complete `#+begin_src yaml'.
+(let* ((type (copy-tree (get 'org-babel-load-languages 'custom-type)))
+       (key-type (and type (plist-get (cdr type) :key-type))))
+  (when (and (consp key-type) (eq (car key-type) 'choice)
+             (not (memq 'yaml (mapcar (lambda (entry) (nth 3 entry))
+                                      (cdr key-type)))))
+    (setcdr (last key-type) '((const :tag "YAML" yaml)))
+    (put 'org-babel-load-languages 'custom-type type)))
 
 ;; built-in default header arguments are fine
 (defvar org-babel-default-header-args:yaml '())
