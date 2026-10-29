@@ -4,6 +4,8 @@ The Emacs Lisp module ~ob-yaml.el~ adds support for YAML source code blocks in O
 
 The primary aim was to allow for writing and maintaining bigger YAML files (or sets of such files) in a [[https://en.wikipedia.org/wiki/Literate_programming][literate programming]] style by using the powerful Babel subsystem of [[https://orgmode.org][Org mode]]. One particular example are [[https://www.home-assistant.io][Home Assistant]] configuration files.
 
+See [[https://blog.lhotka.name/posts/literate-ha-config/][Literate Home Assistant configuration]] for an example of this approach.
+
 Only a subset of Org Babel functionality is required for such purposes, namely editing blocks in [[https://www.emacswiki.org/emacs/YamlMode][yaml-mode]], tangling (including [[https://orgmode.org/manual/Noweb-Reference-Syntax.html][noweb references]]) and possibly exporting. Specifically, YAML blocks needn't be evaluated, and so evaluation-related functions are left unimplemented.
 
 * Installation
@@ -16,5 +18,5 @@ The module can be easily installed in Emacs via [[https://www.gnu.org/software/e
          :rev :newest))
 #+end_src
 
-Alternatively, the ~ob-yaml.el~ file can be downloaded and than loaded
+Alternatively, the ~ob-yaml.el~ file can be downloaded and then loaded
 locally using, for instance, the Emacs [[https://www.gnu.org/software/emacs/manual/html_node/eintr/Loading-Files.html][load]] function.
