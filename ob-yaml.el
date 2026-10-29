@@ -83,39 +83,10 @@
       vars "\n")
      "\n" body "\n")))
 
-(defun org-babel-execute:yaml (body params)
-  "Execute a block of YAML code with org-babel.
-This function is called by `org-babel-execute-src-block'"
-  (message "executing YAML source code block")
-  (let* ((processed-params (org-babel-process-params params))
-         ;; set the session if the value of the session keyword is not the
-         ;; string `none'
-         (session (unless (string= value "none")
-                   (org-babel-yaml-initiate-session
-                    (cdr (assq :session processed-params)))))
-         ;; variables assigned for use in the block
-         (vars (org-babel--get-vars processed-params))
-         (result-params (assq :result-params processed-params))
-         ;; either OUTPUT or VALUE which should behave as described above
-         (result-type (assq :result-type processed-params))
-         ;; expand the body with `org-babel-expand-body:yaml'
-         (full-body (org-babel-expand-body:yaml
-                     body params processed-params)))
-    ;; actually execute the source-code block either in a session or
-    ;; possibly by dropping it to a temporary file and evaluating the
-    ;; file.
-    ;; 
-    ;; for session based evaluation the functions defined in
-    ;; `org-babel-comint' will probably be helpful.
-    ;;
-    ;; for external evaluation the functions defined in
-    ;; `org-babel-eval' will probably be helpful.
-    ;;
-    ;; when forming a shell command, or a fragment of code in some
-    ;; other language, please preprocess any file names involved with
-    ;; the function `org-babel-process-file-name'. (See the way that
-    ;; function is used in the language files)
-    ))
+(defun org-babel-execute:yaml (_body _params)
+  "Signal that YAML source blocks cannot be evaluated."
+  (user-error
+   "YAML source blocks are not evaluated; use :tangle to write them to a file"))
 
 (defun org-babel-prep-session:yaml (session params)
   "Prepare SESSION according to the header arguments specified in PARAMS."
