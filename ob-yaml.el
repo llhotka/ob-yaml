@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 ;;; ob-yaml.el --- org-babel functions for YAML source blocks
 
 ;; Copyright (C) 2023 Ladislav Lhotka
