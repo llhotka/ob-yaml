@@ -5,8 +5,8 @@
 
 ;; Author: Ladislav Lhotka
 ;; Keywords: literate programming, YAML, configuration
-;; Homepage: https://github.com/llhotka/ob-yaml
-;; Version: 0.3
+;; URL: https://github.com/llhotka/ob-yaml
+;; Version: 0.4
 
 ;;; License:
 
@@ -88,25 +88,24 @@
   (user-error
    "YAML source blocks are not evaluated; use :tangle to write them to a file"))
 
-(defun org-babel-prep-session:yaml (session params)
+(defun org-babel-prep-session:yaml (_session _params)
   "Prepare SESSION according to the header arguments specified in PARAMS."
-  )
+  nil)
 
 (defun org-babel-yaml-var-to-yaml (var)
   "Convert an elisp var into a string of YAML source code
 specifying a var of the same value."
   (format "%S" var))
 
-(defun org-babel-yaml-table-or-string (results)
+(defun org-babel-yaml-table-or-string (_results)
   "If the results look like a table, then convert them into an
 Emacs-lisp table, otherwise return the results as a string."
-  )
+  nil)
 
-(defun org-babel-yaml-initiate-session (&optional session)
+(defun org-babel-yaml-initiate-session (&optional _session)
   "If there is not a current inferior-process-buffer in SESSION then create.
 Return the initialized session."
-  (unless (string= session "none")
-    ))
+  nil)
 
 (provide 'ob-yaml)
 ;;; ob-yaml.el ends here
