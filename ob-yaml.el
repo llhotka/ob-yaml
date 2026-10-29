@@ -1,12 +1,12 @@
 ;; -*- lexical-binding: t; -*-
 ;;; ob-yaml.el --- org-babel functions for YAML source blocks
 
-;; Copyright (C) 2023 Ladislav Lhotka
+;; Copyright (C) 2023-2026 Ladislav Lhotka
 
 ;; Author: Ladislav Lhotka
 ;; Keywords: literate programming, YAML, configuration
 ;; Homepage: https://github.com/llhotka/ob-yaml
-;; Version: 0.01
+;; Version: 0.3
 
 ;;; License:
 
